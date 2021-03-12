@@ -8591,6 +8591,11 @@ react-scripts@3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
+react-timer-hook@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-timer-hook/-/react-timer-hook-2.0.7.tgz#49d998d92cf83fa5d874a1d94116766336666487"
+  integrity sha512-kCuCgXLS736lc7hocvHsGzmBdOh3uv1Al9ynIgxmV690nA73UqgYLoGNIxoo6CUoEcyNVARiveBlCRKDQbZIbQ==
+
 react@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
