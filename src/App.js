@@ -13,20 +13,18 @@ export default function App() {
   const { speak, speaking, supported} = useSpeechSynthesis();
 
   const doReset = useCallback(()=>reset(), [])
-  const doSpeak = useCallback((...p) => speak(...p), []);
 
   useEffect(() => {
     const foundTimer = timers.find((t) => t.time === seconds);
     if (foundTimer) {
       // this is where we will speak the text
-      doSpeak({text: foundTimer.text})
+      speak({text: foundTimer.text})
 
     }
     // check to see if seconds is greater than the last timer's time
     if (seconds > timers[timers.length - 1].time) doReset()
-    
 
-  }, [seconds, timers, doSpeak,  doReset])
+  }, [seconds, timers, doReset])
 
 
 
