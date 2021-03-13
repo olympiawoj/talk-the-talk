@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useStopwatch } from 'react-timer-hook'
+import React, { useCallback, useEffect, useState } from 'react';
+import { useStopwatch } from 'react-timer-hook';
+import { useSpeechSynthesis } from 'react-speech-kit';
 import './App.css';
 
 
@@ -9,18 +10,24 @@ export default function App() {
   { time: 8, text: 'whats up' }])
 
   const { seconds, isRunning, start, reset } = useStopwatch()
+  const { speak, speaking, supported} = useSpeechSynthesis();
 
+  const doReset = useCallback(()=>reset(), [])
+  const doSpeak = useCallback((...p) => speak(...p), []);
 
-  useEffect(()=>{
-    const foundTimer = timers.find(t => t.time === seconds)
-    if(foundTimer){
+  useEffect(() => {
+    const foundTimer = timers.find((t) => t.time === seconds);
+    if (foundTimer) {
       // this is where we will speak the text
+      doSpeak({text: foundTimer.text})
+
     }
     // check to see if seconds is greater than the last timer's time
-    if(seconds > timers[timers.length - 1].time) reset()
+    if (seconds > timers[timers.length - 1].time) doReset()
+    
 
-  }, [seconds, timers, reset])
-  
+  }, [seconds, timers, doSpeak,  doReset])
+
 
 
   function updateTimers(index, time, text) {
@@ -34,6 +41,10 @@ export default function App() {
     const newTimers = [...timers, { time: 100, text: 'yooo' }]
     setTimers(newTimers)
   }
+
+
+  if (!supported) return <div>Your browser is not sypported. Sorry. </div>
+
 
   return (
     <div className="app">
@@ -53,6 +64,7 @@ export default function App() {
       <div className="buttons">
         {!isRunning && <button className="start-button" onClick={start}>Start</button>}
         {isRunning && <button className="stop-button" onClick={reset}>Stop</button>}
+        {speaking && <p>I am speaking...</p>}
       </div>
     </div>
   );
@@ -68,7 +80,7 @@ function TimerSlot({ index, timer, updateTimers }) {
 
   return (
     <form className="timer" key={index}>
-      <input type="number" value={time} onChange={(e) => setTime(e.target.value)} onBlur={handleBlur} />
+      <input type="number" value={time} onChange={(e) => setTime(+e.target.value)} onBlur={handleBlur} />
       <input type="text" value={text} onChange={(e) => setText(e.target.value)} onBlur={handleBlur} />
     </form>
   )
